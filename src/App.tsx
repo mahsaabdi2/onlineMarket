@@ -1,9 +1,15 @@
+import { Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import Navbar from "./components/Navbar";
+
 const App: React.FC = () => {
   return (
-    <div className="container">
-      <h1 className="text-primary">Hello, Bootstrap!</h1>
-      <button className="btn btn-success">Click Me</button>
-    </div>
+    <>
+    <Navbar/>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+      </Routes>
+    </>
   );
 };
 
