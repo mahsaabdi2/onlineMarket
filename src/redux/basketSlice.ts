@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the type for a basket item
+
 interface BasketItem {
   id: number;
   name: string;
