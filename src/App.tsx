@@ -6,11 +6,10 @@ import Basket from "./pages/Basket";
 import Navbar from "./components/Navbar";
 import ProductDetails from "./pages/ProductDetail";
 
-
 const App: React.FC = () => {
 
   return (
-   <>
+   <div>
     <Navbar/>
     <div>
       <Routes>
@@ -20,7 +19,7 @@ const App: React.FC = () => {
       </Routes>
     </div>
    
-   </>
+   </div>
 
 
 

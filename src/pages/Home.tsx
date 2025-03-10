@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import productSlice, { fetchProducts } from "../redux/productSlice";
 import { AppDispatch, RootState } from "../redux/store";
@@ -12,7 +12,8 @@ const Home = () => {
     const { data, search } = useSelector((state: RootState) => state.product);
     const dispatch = useDispatch<AppDispatch>();
      const {setSearch}=productSlice.actions
-     const {add}=basketSlice.actions
+     const {add}=basketSlice.actions;
+     const [category , setCategory]=useState<string>("")
     
      const handleAddToBasket=(product:any)=>{
         dispatch(add(product))
@@ -35,6 +36,7 @@ const Home = () => {
     }, [dispatch]);
 
     return (
+        <>
         <div id="pricing-tables" className="padding-top padding-bottom">
              <div  className="container rounded d-flex flex-column align-items-center text-center" style={{ width: "100%" }} >
                 <a href="#" style={{ fontSize: "1.5rem" }} className="navbar-brand mx-4 mb-4">Online Market</a>
@@ -80,6 +82,7 @@ const Home = () => {
                 </div>
             </div>
         </div>
+        </>
     );
 };
 

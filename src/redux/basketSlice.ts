@@ -13,6 +13,12 @@ interface UpdateQuantityPayload {
   value: number;
 }
 
+interface UpdateQuantityPayload {
+  id: number;
+  change: number;
+}
+
+
 const initialState: BasketItem[] = [];
 
 const basketSlice = createSlice({
@@ -33,11 +39,14 @@ const basketSlice = createSlice({
     },
 
     updateQuantity: (state, action: PayloadAction<UpdateQuantityPayload>) => {
-      const newItem = state.find((item) => item.id === action.payload.id);
+      const { id, value } = action.payload;
+      const newItem = state.find((item) => item.id === id);
       if (newItem) {
-        newItem.quantity += action.payload.value;
+        newItem.quantity += value;
       }
     },
+    
+  
 
     clearBasket: () => [],
   },

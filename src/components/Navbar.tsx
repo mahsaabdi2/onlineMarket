@@ -4,18 +4,29 @@ import { useEffect, useState } from "react";
 import basket from "../asset/icons8-shopping-baskets-50.png"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
- import { FaTrashAlt } from "react-icons/fa";
 
 import basketSlice from "../redux/basketSlice";
 const Navbar = () => {
   const items=useSelector((state:RootState)=>state.basket);
-  const {remove}=basketSlice.actions;
+  const {remove , updateQuantity, clearBasket}=basketSlice.actions;
   const [isScrolled, setIsScrolled] = useState(false);
   const [isModalOpen , setIsModalOpen]=useState(false);
-  const dispatch=useDispatch()
+  const dispatch=useDispatch();
+
+  const handleChangeQuantity = (id: number, value: number) => {
+    dispatch(updateQuantity({
+      id, value,
+      change: 0
+    }));
+  };
+  
   
   const handleRemoveProduct=(product:any)=>{
     dispatch(remove(product));
+  }
+
+  const handleClearAllBasket=()=>{
+    dispatch(clearBasket())
   }
 
 
@@ -97,16 +108,25 @@ const Navbar = () => {
               {items.map((item: any, index) => (
                 <li key={index} className="list-group-item d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center">
+                  <span className="rounded text-white" style={{backgroundColor:"hsl(268, 37.00%, 71.40%)"}}>{item.quantity}</span>
                   <img src={item.image} alt={item.title} 
                     style={{ width: "50px", height: "50px", objectFit: "contain" }} className="me-3"/>
-                  <span>{item.title}</span>
+                  <span className="mx-2">{item.title}</span>
+
+                  <button className="mx-1 btn" style={{border:"white 1px dashed" ,backgroundColor: "hsl(268, 13.50%, 78.20%)"}} onClick={()=>{handleChangeQuantity(item.id ,1)}} >+</button>
+                  <button className="btn" style={{border:"white 1px dashed" , backgroundColor: "hsl(268, 13.50%, 78.20%)"}} 
+                  onClick={()=>{handleChangeQuantity(item.id,-1)}} disabled={item.quantity <= 1}>-</button>
                 </div>
+
                 {/* Wrap price and button inside a flex container */}
                 <div className="d-flex align-items-center gap-2">
-                  <span className="fw-bold">${item.price}</span>
+                  <span className="fw-bold">Total: ${(item.price * item.quantity).toFixed(2)}</span>
+                  <span className="fw-bold">Price: ${item.price.toFixed(2)}</span>
+
                   <button onClick={() => handleRemoveProduct(item.id)} className="btn btn-danger p-1">
-                    <FaTrashAlt />
+                    {/* <FaTrashAlt /> */}
                   </button>
+                  
                 </div>
               </li>
               ))}
@@ -117,15 +137,13 @@ const Navbar = () => {
         </div>
 
         {/* Modal Footer */}
-        <div className="modal-footer">
-          <button 
+        <div className="modal-footer d-flex justify-content-between">
+        <div><button onClick={()=>handleClearAllBasket()} style={{ backgroundColor: "hsl(269, 100%, 62%)"}} className="btn">clear</button></div>
+          <div><button 
             type="button" 
             className="btn" 
-            style={{ backgroundColor: "hsl(269, 100%, 62%)", color: "white" }} 
-            onClick={() => setIsModalOpen(false)}
-          >
-            Close
-          </button>
+            style={{ backgroundColor: "hsl(269, 100%, 62%)"}} 
+            onClick={() => setIsModalOpen(false)}>Close</button></div>
         </div>
       </div>
     </div>
