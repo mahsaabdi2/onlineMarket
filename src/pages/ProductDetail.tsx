@@ -15,7 +15,7 @@ const ProductDetails = () => {
     // Memoizing the handler function to avoid unnecessary re-creations
     const handleAddToBasket = useCallback((product: any) => {
         dispatch(add(product));
-    }, [dispatch]);
+    }, [dispatch, add]);
 
     // Early return if no product is found
     const selectedProduct = data.find((item) => item.id === productId);
@@ -36,12 +36,12 @@ const ProductDetails = () => {
                                 style={{ maxHeight: "400px", objectFit: "contain" }}
                             />
                         </div>
-                        <h2 className="text-center mt-3">{selectedProduct.title}</h2>
+                        <h2 className="text-center mt-3 text-secondary">{selectedProduct.title}</h2>
                         <p className="text-center mt-4" style={{ color: "hsl(269, 100%, 62%)", fontSize: "40px" }}>
                             {selectedProduct.category}
                         </p>
 
-                        <p className="price text-center">
+                        <p className="price text-center text-secondary">
                             <span className="dollar-icon">$</span>
                             <span style={{ color: "#3a0d69", fontSize: "24px" }}>
                                 {selectedProduct.price || "99"}

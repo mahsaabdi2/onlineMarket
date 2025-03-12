@@ -34,10 +34,13 @@ const basketSlice = createSlice({
       } else {
         state.push({ ...action.payload, quantity: 1 });
       }
+      localStorage.setItem("basket" , JSON.stringify(state))
     },
 
     remove: (state, action: PayloadAction<number>) => {
-      return state.filter((item) => item.id !== action.payload);
+      const updatedState=state.filter((item) => item.id !== action.payload);
+      localStorage.setItem("basket" , JSON.stringify(updatedState));
+      return updatedState;
     },
 
     updateQuantity: (state, action: PayloadAction<UpdateQuantityPayload>) => {
@@ -46,11 +49,13 @@ const basketSlice = createSlice({
       if (newItem) {
         newItem.quantity += value;
       }
+      localStorage.setItem("basket" , JSON.stringify(state));
     },
     
-  
-
-    clearBasket: () => [],
+    clearBasket: () => {
+      localStorage.removeItem("basket");
+      return []
+    }
   },
 });
 

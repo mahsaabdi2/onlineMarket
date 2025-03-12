@@ -1,13 +1,13 @@
 const Footer = () => {
   return (
-      <footer className="text-secondary text-center py-2 mt-5 " style={{ backgroundColor: 'hsl(269, 20.00%, 71.60%)' }}>
+      <footer className="text-center py-2 mt-5 " style={{ backgroundColor: 'hsl(269, 20.00%, 71.60%)' }}>
           <div className="container">
               <p className="mb-0">&copy; {new Date().getFullYear()} Online Market. All rights reserved.</p>
               <p className="mb-0">
-                  <a href="#" className="text-secondary mx-2">Privacy Policy</a> | 
-                  <a href="#" className="text-secondary mx-2">Terms of Service</a> | 
-                  <a href="#" className="text-secondary mx-2">Contact</a>
-              </p>
+                <button className="btn btn-link text-black mx-2 text-decoration-none p-0" type="button">Privacy Policy</button> | 
+                <button className="btn btn-link text-black mx-2 text-decoration-none p-0" type="button">Terms of Service</button> | 
+                <button className="btn btn-link text-black mx-2 text-decoration-none p-0" type="button">Contact</button>
+             </p>
           </div>
       </footer>
   );

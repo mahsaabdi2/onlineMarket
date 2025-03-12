@@ -3,7 +3,6 @@ import { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import basketSlice from "../redux/basketSlice";
-import { FaTrashAlt } from "react-icons/fa";
 import basket from "../asset/icons8-shopping-baskets-50.png";
 import icon from "../asset/logo.png";
 
@@ -14,10 +13,19 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
-  // Calculate the new quantity for an item
+  
+  useEffect(() => {
+    const storedBasket = localStorage.getItem("basket");
+    if (storedBasket) {
+      const parsedItems = JSON.parse(storedBasket);
+      parsedItems.forEach((item: any) => {
+        dispatch(basketSlice.actions.add(item));
+      });
+    }
+  }, [dispatch]);
   const handleChangeQuantity = useCallback((id: number, value: number) => {
     dispatch(updateQuantity({ id, value, change: 0 }));
-  }, [dispatch]);
+  }, [dispatch,updateQuantity]);
 
   const handleRemoveProduct = (productId: number) => {
     dispatch(remove(productId));
@@ -90,9 +98,7 @@ const Navbar = () => {
                     {items.map((item:any) => (
                       <li key={item.id} className="list-group-item d-flex justify-content-between align-items-center bg-light">
                         <div className="d-flex align-items-center">
-                          <span className="rounded text-white" style={{ backgroundColor: "hsl(268, 37.00%, 71.40%)" }}>
-                            {item.quantity}
-                          </span>
+                          <span className="rounded text-black fw-bold">{"  "}{item.quantity}</span>
                           <img src={item.image} alt={item.title} style={{ width: "50px", height: "50px", objectFit: "contain" }} className="me-3" />
                           <span className="fw-bold" style={{ maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                             {item.title.length > 50 ? `${item.title.slice(0, 20)}...` : item.title}
