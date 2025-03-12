@@ -13,18 +13,10 @@ const Navbar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
 
-  
-  useEffect(() => {
-    const storedBasket = localStorage.getItem("basket");
-    if (storedBasket) {
-      const parsedItems = JSON.parse(storedBasket);
-      parsedItems.forEach((item: any) => {
-        dispatch(basketSlice.actions.add(item));
-      });
-    }
-  }, [dispatch]);
+  // Calculate the new quantity for an item
+
   const handleChangeQuantity = useCallback((id: number, value: number) => {
-    dispatch(updateQuantity({ id, value, change: 0 }));
+    dispatch(updateQuantity({ id, value}));
   }, [dispatch,updateQuantity]);
 
   const handleRemoveProduct = (productId: number) => {

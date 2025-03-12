@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getBasketFromLocalStorage, removeFromLocalStorage, saveBasketToLocalStorage } from "../utilies/localStorageUtil";
 
 
 interface BasketItem {
@@ -15,13 +16,7 @@ interface UpdateQuantityPayload {
   value: number;
 }
 
-interface UpdateQuantityPayload {
-  id: number;
-  change: number;
-}
-
-
-const initialState: BasketItem[] = [];
+const initialState: BasketItem[] = getBasketFromLocalStorage(); 
 
 const basketSlice = createSlice({
   name: "basket",
@@ -34,27 +29,27 @@ const basketSlice = createSlice({
       } else {
         state.push({ ...action.payload, quantity: 1 });
       }
-      localStorage.setItem("basket" , JSON.stringify(state))
+      saveBasketToLocalStorage(state); 
     },
 
     remove: (state, action: PayloadAction<number>) => {
-      const updatedState=state.filter((item) => item.id !== action.payload);
-      localStorage.setItem("basket" , JSON.stringify(updatedState));
+      const updatedState = state.filter((item) => item.id !== action.payload);
+      saveBasketToLocalStorage(updatedState); 
       return updatedState;
     },
 
     updateQuantity: (state, action: PayloadAction<UpdateQuantityPayload>) => {
       const { id, value } = action.payload;
-      const newItem = state.find((item) => item.id === id);
-      if (newItem) {
-        newItem.quantity += value;
+      const item = state.find((item) => item.id === id);
+      if (item) {
+        item.quantity += value;
       }
-      localStorage.setItem("basket" , JSON.stringify(state));
+      saveBasketToLocalStorage(state); 
     },
-    
+
     clearBasket: () => {
-      localStorage.removeItem("basket");
-      return []
+      removeFromLocalStorage("basket");
+      return []; 
     }
   },
 });

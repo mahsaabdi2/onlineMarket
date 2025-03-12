@@ -5,29 +5,35 @@ import { AppDispatch, RootState } from "../redux/store";
 import { Link } from "react-router-dom";
 import basketSlice from "../redux/basketSlice";
 import Footer from "../components/Footer";
+import { getFromLocalStorage, saveToLocalStorage } from "../utilies/localStorageUtil";
 
 const Home = () => {
   const { data, search , status} = useSelector((state: RootState) => state.product);
   const dispatch = useDispatch<AppDispatch>();
   const { setSearch } = productSlice.actions;
   const { add } = basketSlice.actions;
-
   const [category, setCategory] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  const handleAddToBasket = (product: any) => {
-    dispatch(add(product));
-  };
+ 
 
-  const handleSearch = (e: React.FormEvent | React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const inputElement = document.getElementById("searchInput") as HTMLInputElement;
-    if (inputElement) {
-      dispatch(setSearch(inputElement.value));
+  useEffect(() => {
+    const storedSearch = getFromLocalStorage("search");
+    if (storedSearch) {
+      dispatch(setSearch(storedSearch));
     }
+  }, [dispatch]);
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    dispatch(setSearch(value));
+    saveToLocalStorage("search", value); 
   };
 
+  const handleAddToBasket = (product: any) => {
+      dispatch(add(product));
+    };
   const filteredData = data.filter((item) =>
     item.title.toLowerCase().includes(search.toLowerCase()) &&
     (category ? item.category === category : true)
@@ -53,7 +59,7 @@ const Home = () => {
             <div className="container rounded d-flex flex-column align-items-center text-center" style={{ width: "100%" }}>
               <h1 className="text-sm fw-bold sm:text-lg m-4 fw-bol" style={{ color: "hsl(269, 100%, 62%)" }}>Online Market</h1>
               <div style={{ width: "80%" }}>
-                <form className="form-inline mx-4 d-flex justify-content-between mx-2" onSubmit={handleSearch}>
+                <form className="form-inline mx-4 d-flex justify-content-between mx-2" onSubmit={(e:any) =>{handleSearch(e)}}>
                   <input
                     id="searchInput"
                     className="form-control mr-ms-2"
